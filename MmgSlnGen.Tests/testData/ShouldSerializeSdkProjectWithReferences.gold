@@ -1,0 +1,16 @@
+ProjectB.csproj =>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include = "..\ProjectA\ProjectA.csproj" />
+	</ItemGroup>
+</Project>
+
+Class1.cs =>
+namespace ProjectB
+{
+	public class Class001 {}
+}
+
