@@ -1,2 +1,3 @@
-Tool for generate solution boilerplate to perf investigation.
-Usage: dotnet run [Mode(NonSdk|Sdk)] [DestinationFolder] [ProjectCount] [ClassesPerProject]
+**Tool for generation boilerplate solution to performance investigations.**
+
+Usage: ```dotnet run [Mode(NonSdk|Sdk)] [DestinationFolder] [ProjectCount] [ClassesPerProject]```
