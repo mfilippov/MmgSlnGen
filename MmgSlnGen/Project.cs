@@ -13,12 +13,15 @@ namespace MmgSlnGen
 
         public string ProjectPath => Path.Combine(Name, $"{Name}.csproj");
 
-        public Project(Guid guid, string name, int classesPerProject, List<Project> projectReferences)
+        public string ClassContent { get; set; }
+
+        public Project(Guid guid, string name, int classesPerProject, List<Project> projectReferences, string classContent)
         {
             ClassesPerProject = classesPerProject;
             ProjectReferences = projectReferences;
             Guid = guid;
             Name = name;
+            ClassContent = classContent;
         }
     }
 }

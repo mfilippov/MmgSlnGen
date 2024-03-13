@@ -1,23 +1,30 @@
 using System;
 using System.IO;
 using Shouldly;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace MmgSlnGen.Tests
 {
-    public class BaseTestWithGold : IDisposable
+    public abstract class BaseTestWithGold : IDisposable
     {
-        private const string TestDataDir = "..\\..\\..\\testData";
+        private readonly string _testDataDir = Path.GetFullPath("../../../testData");
+        private readonly ITestOutputHelper _testOutputHelper;
         protected string TempDir { get; }
 
-        protected BaseTestWithGold()
+        protected BaseTestWithGold(ITestOutputHelper testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
             TempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             Directory.CreateDirectory(TempDir);
         }
 
-        protected static void ExecuteWithGold(string goldFilePath, Action<TextWriter> action)
+        protected void ExecuteWithGold(string goldFilePath, Action<TextWriter> action)
         {
-            var tempFile = Path.GetTempFileName();
+            var goldFileAbsolutePath = Path.Combine(_testDataDir, goldFilePath);
+            var tempFile = Path.Combine(Path.GetDirectoryName(goldFileAbsolutePath)
+                                        ?? throw new InvalidOperationException($"Cannot get directory name from goldFilePath: '{goldFileAbsolutePath}'"),
+                $"{Path.GetFileNameWithoutExtension(goldFileAbsolutePath)}.tmp");
             using (var fs = new FileStream(tempFile, FileMode.Create, FileAccess.Write))
             {
                 var wrt = new StreamWriter(fs);
@@ -25,11 +32,25 @@ namespace MmgSlnGen.Tests
                 wrt.Flush();
                 fs.Close();
             }
-            File.ReadAllText(Path.Combine(TestDataDir, goldFilePath)).Replace("\r\n", "\n")
-                .ShouldBe(File.ReadAllText(tempFile).Replace("\r\n", "\n"),
-                    $"Gold file content is different [{tempFile}].");
+            var host = Environment.GetEnvironmentVariable("RESHARPER_HOST");
+            var goldFileContent = File.ReadAllText(goldFileAbsolutePath).Replace("\r\n", "\n");
+            var tempFileContent = File.ReadAllText(tempFile).Replace("\r\n", "\n");
+            if (host == "Rider")
+            {
+                if (goldFileContent != tempFileContent)
+                {
+                    _testOutputHelper.WriteLine($"Compare(Rider)=\"{ToFileUri(tempFile)}\",\"{ToFileUri(goldFileAbsolutePath)}\"");
+                    Assert.Fail("Gold file content is different");
+                }
+            }
+            else
+            {
+                goldFileContent.ShouldBe(tempFileContent, $"Gold file content is different [{tempFile}]."); 
+            }
             File.Delete(tempFile);
         }
+        
+        private static string ToFileUri(string path) => "file:///" + path.Replace("\\", "/");
 
         public void Dispose()
         {

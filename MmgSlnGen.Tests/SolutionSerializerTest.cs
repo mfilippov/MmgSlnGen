@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MmgSlnGen.Tests
 {
-    public class SolutionSerializerTest : BaseTestWithGold
+    public class SolutionSerializerTest(ITestOutputHelper testOutputHelper) : BaseTestWithGold(testOutputHelper)
     {
         [Fact]
         public void SerializeSdkSolution()
@@ -16,8 +17,9 @@ namespace MmgSlnGen.Tests
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838D4C}"),
                     "TestProject",
                     1,
-                    new List<Project>())
-            });
+                    new List<Project>(),
+                    string.Empty)
+            }, ProjectReferenceMode.WithoutProjectReferences);
             sln.SerializeTo(TempDir, Mode.Sdk);
             ExecuteWithGold("SerializeSdkSolution.gold", wrt =>
             {
@@ -39,8 +41,9 @@ namespace MmgSlnGen.Tests
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838D4C}"),
                     "TestProject",
                     1,
-                    new List<Project>())
-            });
+                    new List<Project>(),
+                    string.Empty)
+            }, ProjectReferenceMode.WithoutProjectReferences);
             sln.SerializeTo(TempDir, Mode.NonSdk);
             ExecuteWithGold("SerializeNonSdkSolution.gold", wrt =>
             {

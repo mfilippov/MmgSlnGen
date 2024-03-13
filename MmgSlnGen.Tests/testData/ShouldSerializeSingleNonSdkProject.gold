@@ -46,6 +46,8 @@ TestProject.csproj =>
 Class1.cs =>
 namespace TestProject
 {
-	public class Class001 {}
+	public class Class001
+	{
+	}
 }
 

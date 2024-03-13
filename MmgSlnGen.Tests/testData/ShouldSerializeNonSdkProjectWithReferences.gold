@@ -39,7 +39,6 @@ ProjectB.csproj =>
 		<Compile Include="Class001.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference>
 		<ProjectReference Include="..\ProjectA\ProjectA.csproj">
 			<Project>{2D895D67-050F-494B-B4C9-3ED7BD838D4C}</Project>
 			<Name>ClassLibrary4</Name>
@@ -47,10 +46,10 @@ ProjectB.csproj =>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
-
 Class1.cs =>
 namespace ProjectB
 {
-	public class Class001 {}
+	public class Class001
+	{
+	}
 }
-

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MmgSlnGen.Tests
 {
-    public class ProjectGraphTests : BaseTestWithGold
+    public class ProjectGraphTests(ITestOutputHelper testOutputHelper) : BaseTestWithGold(testOutputHelper)
     {
         [Fact]
         public void ShouldBuildCorrectlyProjectGraph()
@@ -16,43 +17,51 @@ namespace MmgSlnGen.Tests
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838001}"),
                     "Project1",
                     1,
-                    new List<Project>()),
+                    new List<Project>(),
+                    string.Empty),
                 new Project(
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838002}"),
                     "Project2",
                     2,
-                    new List<Project>()),
+                    new List<Project>(),
+                    string.Empty),
                 new Project(
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838003}"),
                     "Project3",
                     3,
-                    new List<Project>()),
+                    new List<Project>(),
+                    string.Empty),
                 new Project(
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838004}"),
                     "Project4",
                     3,
-                    new List<Project>()),
+                    new List<Project>(),
+                    string.Empty),
                 new Project(
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838005}"),
                     "Project5",
                     3,
-                    new List<Project>()),
+                    new List<Project>(),
+                    string.Empty),
                 new Project(
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838006}"),
                     "Project6",
                     3,
-                    new List<Project>()),
+                    new List<Project>(),
+                    string.Empty),
                 new Project(
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838007}"),
                     "Project7",
                     3,
-                    new List<Project>()),
+                    new List<Project>(),
+                    string.Empty),
                 new Project(
                     new Guid("{2D895D67-050F-494B-B4C9-3ED7BD838008}"),
                     "Project8",
                     3,
-                    new List<Project>())
-            });
+                    new List<Project>(),
+                    string.Empty)
+            }, ProjectReferenceMode.WithProjectReferences);
             sln.SerializeTo(TempDir, Mode.Sdk);
             ExecuteWithGold("ShouldBuildCorrectlyProjectGraph.gold", wrt =>
             {
