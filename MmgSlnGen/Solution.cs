@@ -29,11 +29,14 @@ namespace MmgSlnGen
             }
         }
 
-        public Solution(string name, List<Project> projects)
+        public Solution(string name, List<Project> projects, ProjectReferenceMode projectReferenceMode)
         {
             Name = name;
             Projects = projects;
-            FillProjectGraph();
+            if (projectReferenceMode == ProjectReferenceMode.WithProjectReferences)
+            {
+                FillProjectGraph();
+            }
         }
     }
 }

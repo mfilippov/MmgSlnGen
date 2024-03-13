@@ -11,7 +11,7 @@ namespace MmgSlnGen
             foreach (var project in solution.Projects)
             {
                 sb.Append(
-                    $"Project(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"{project.Name}\", \"{project.ProjectPath}\", \"{{{project.Guid.ToString().ToUpperInvariant()}}}\"\n");
+                    $"Project(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"{project.Name}\", \"{project.ProjectPath.Replace("/", "\\")}\", \"{{{project.Guid.ToString().ToUpperInvariant()}}}\"\n");
             }
 
             sb.Append("EndProject\n" +
